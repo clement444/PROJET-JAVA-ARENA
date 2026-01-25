@@ -1,6 +1,10 @@
 package main;
 
 import java.util.Scanner;
+import models.PokemonFeu;
+import models.PokemonEau;
+import combat.Combat;
+
 
 public class Main {
    
@@ -46,5 +50,11 @@ public class Main {
                     System.out.println("Choix invalide.");
             }
         }
+
+        PokemonFeu feu = new PokemonFeu("Salameche");
+        PokemonEau eau = new PokemonEau("Carapuce");
+
+        Combat.attaquer(feu, eau);
+        Combat.attaquer(eau, feu);
     }
 }

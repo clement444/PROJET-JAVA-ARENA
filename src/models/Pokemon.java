@@ -31,5 +31,11 @@ public abstract class Pokemon {
     }
 
     public abstract int calculerDegats(Pokemon cible);
-
+    
+    public void perdrePv(int degats) {
+        pv -= degats;
+        if (pv < 0) {
+            pv = 0;
+        }
+    }
 }
