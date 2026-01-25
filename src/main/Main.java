@@ -1,9 +1,7 @@
 package main;
 
 import java.util.Scanner;
-import models.PokemonFeu;
-import models.PokemonEau;
-import combat.Combat;
+import game.Dresseur;
 
 
 public class Main {
@@ -15,6 +13,9 @@ public class Main {
         System.out.println("Chargement du jeu...");
         System.out.print("Nom de votre équipe : ");
         String nomEquipe = scanner.nextLine();
+
+        Dresseur dresseur = new Dresseur(nomEquipe);
+        System.out.println("Dresseur créé avec l'équipe : " + dresseur.getNomEquipe());
 
         int choix = -1;
 
@@ -50,11 +51,5 @@ public class Main {
                     System.out.println("Choix invalide.");
             }
         }
-
-        PokemonFeu feu = new PokemonFeu("Salameche");
-        PokemonEau eau = new PokemonEau("Carapuce");
-
-        Combat.attaquer(feu, eau);
-        Combat.attaquer(eau, feu);
     }
 }
