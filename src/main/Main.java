@@ -34,10 +34,10 @@ public class Main {
             
             switch (choix) {
                 case 1:
-                    System.out.println("Nouvelle partie (à venir)");
+                    System.out.println("Nouvelle partie (prochain truc à ajouté)");
                     break;
                 case 2:
-                    System.out.println("Chargement de la partie (à venir)");
+                    System.out.println("Chargement de la partie (prochain truc à ajouté)");
                     break;
                 case 3:
                     System.out.println("Au revoir !");
