@@ -15,7 +15,13 @@ public class Main {
         String nomEquipe = scanner.nextLine();
 
         Dresseur dresseur = new Dresseur(nomEquipe);
-        System.out.println("Dresseur créé avec l'équipe : " + dresseur.getNomEquipe());
+        dresseur.genererEquipeDepart();
+        System.out.println("Equipe de depart :");
+        
+        for (int i = 0; i < dresseur.getEquipe().size(); i++) {
+            System.out.println("- " + dresseur.getEquipe().get(i).getNom());
+        }
+
 
         int choix = -1;
 
