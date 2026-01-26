@@ -204,11 +204,14 @@ public class Main {
             Dresseur dresseur,
             Pokemon sauvage) {
 
+        int nbPotions = dresseur.getInventaire().getOrDefault("Potion", 0);
+        int nbRappels = dresseur.getInventaire().getOrDefault("Rappel", 0);
+        int nbPokeballs = dresseur.getInventaire().getOrDefault("Pokeball", 0);
+
         System.out.println();
-        System.out.println("=== UTILISER UN OBJET ===");
-        System.out.println("1 - Potion");
-        System.out.println("2 - Rappel");
-        System.out.println("3 - Pokéball (capture)");
+        System.out.println("1 - Potion x " + nbPotions);
+        System.out.println("2 - Rappel x " + nbRappels);
+        System.out.println("3 - Pokéball (capture) x " + nbPokeballs);
         System.out.println("4 - Retour");
         System.out.print("Votre choix : ");
 
