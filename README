@@ -1,47 +1,46 @@
-🎮 Projet Java — Pokémon Arena (Console)
-📌 Présentation
+Projet Java — Pokémon Arena (Console)
+
+Présentation
 
 Ce projet est un jeu console en Java, réalisé dans le cadre du cours de Découverte de la Programmation Orientée Objet (POO).
 
 Le joueur incarne un Dresseur possédant une équipe de Pokémon.
 Il peut lancer des combats, utiliser des objets, capturer des Pokémon sauvages, gagner des crédits et sauvegarder sa progression.
 
-Le projet respecte strictement le cahier des charges fourni et se limite aux notions vues en cours.
 
-🧠 Concepts utilisés
+Méthode utilisés :
 
-Programmation Orientée Objet (POO)
+ - Classes
 
-Classes
+ - Héritage
 
-Héritage
+- Polymorphisme
 
-Polymorphisme
+- Encapsulation
 
-Encapsulation
+- Collections
 
-Collections
+- ArrayList pour l’équipe
 
-ArrayList pour l’équipe
+- HashMap pour l’inventaire
 
-HashMap pour l’inventaire
+- Exceptions personnalisées
 
-Exceptions personnalisées
+- Lecture / écriture de fichiers (CSV)
 
-Lecture / écriture de fichiers (CSV)
 
-Utilisation de la console (Scanner)
+Fonctionnalités :
 
-🕹️ Fonctionnalités
-🎒 Dresseur
+1 - Dresseur
 
 Possède une équipe de Pokémon
 
 Possède un inventaire (Potion, Rappel, Pokéball)
 
-Gagne des crédits après les combats
+Gagne des crédits après les combats (10 crédits)
 
-🐾 Pokémon
+
+2 - Pokémon
 
 Types : Feu / Eau / Plante
 
@@ -49,45 +48,41 @@ Points de Vie (PV)
 
 Attaques avec avantage de type (Pierre-Feuille-Ciseaux)
 
-Pokémon KO non utilisables
+Eau bat Feu                    Feu bat Plante                    Plante bat Eau
+- L’eau éteint le feu          - Le feu brûle la plante          - La plante absorbe l’eau
 
-⚔️ Combat
+
+3 - Combat
 
 Combat contre un Pokémon sauvage aléatoire
 
-Menu de combat :
-
-Attaquer
-
-Utiliser un objet
-
-Fuir
-
+Rappel possible uniquement si le Pokémon est KO
 Capture possible uniquement si le Pokémon a ≤ 30 % de PV
 
-🛍️ Boutique
+
+4 - Boutique
 
 Achat d’objets contre des crédits :
 
-Potion
+Potion (5 crédits)
 
-Rappel
+Rappel (20 crédits)
 
-Pokéball
+Pokéball (10 crédits)
 
-💾 Sauvegarde
 
-Sauvegarde de :
+5 - Sauvegarde
 
-l’équipe (type, nom, PV)
-
-l’inventaire
+Sauvegarde de l’équipe (type, nom, PV) et de l’inventaire.
 
 Fichier texte au format CSV
 
 Chargement automatique possible au démarrage
 
-📂 Organisation du projet
+Uniquement s’il reste des Pokémons en vie ou si le joueur à un "rappel"
+
+
+Organisation du projet
 src/
  ├─ main/        → Classe Main (menus, interactions)
  ├─ game/        → Dresseur
@@ -97,11 +92,11 @@ src/
  ├─ save/        → Sauvegarde / chargement
  ├─ exceptions/  → Exceptions personnalisées
 
-▶️ Compilation et exécution
-🔨 Compilation
+
+Compilation
 
 À la racine du projet :
 javac src\main\*.java src\models\*.java src\combat\*.java src\game\*.java src\exceptions\*.java src\save\*.java
 
-▶️ Lancement
+Lancement
 java -cp src main.Main
