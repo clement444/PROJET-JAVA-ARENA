@@ -3,6 +3,9 @@ package main;
 import java.util.Scanner;
 import exceptions.ActionInterditeException;
 import game.Dresseur;
+import save.SaveManager;
+import java.io.IOException;
+
 
 
 public class Main {
@@ -10,6 +13,7 @@ public class Main {
     public static void main(String[] args) { 
         Scanner scanner = new Scanner(System.in);
 
+        afficherLogoPokemon();
         System.out.println("=== Bienvenue dans le jeu Pokemon ===");
         System.out.println("Chargement du jeu...");
         System.out.print("Nom de votre équipe : ");
@@ -19,14 +23,6 @@ public class Main {
         dresseur.genererEquipeDepart();
         dresseur.ajouterObjet("Potion", 2);
         dresseur.ajouterObjet("Pokeball", 1);
-
-
-        System.out.println("Equipe de depart :");
-        
-        for (int i = 0; i < dresseur.getEquipe().size(); i++) {
-            System.out.println("- " + dresseur.getEquipe().get(i).getNom());
-        }
-
 
         int choix = -1;
 
@@ -56,15 +52,40 @@ public class Main {
                             System.out.println(e.getMessage());
                     }
                     break;
+
                 case 2:
-                    System.out.println("Chargement de la partie (prochain truc à ajouté)");
+                    try {
+                        dresseur = SaveManager.charger();
+                        System.out.println("Partie chargée !");
+                    } catch (IOException e) {
+                        System.out.println("Aucune sauvegarde trouvée.");
+                    }
                     break;
+
                 case 3:
+                    try {
+                        SaveManager.sauvegarder(dresseur);
+                        System.out.println("Partie sauvegardée.");
+                    } catch (IOException e) {
+                        System.out.println("Erreur lors de la sauvegarde.");
+                    }
                     System.out.println("Au revoir !");
                     break;
+
                 default:
                     System.out.println("Choix invalide.");
             }
         }
+    }
+
+    private static void afficherLogoPokemon() {
+        System.out.println(
+            "██████╗  ██████╗ ██╗  ██╗███████╗███╗   ███╗ ██████╗ ███╗   ██╗\n" +
+            "██╔══██╗██╔═══██╗██║ ██╔╝██╔════╝████╗ ████║██╔═══██╗████╗  ██║\n" +
+            "██████╔╝██║   ██║█████╔╝ █████╗  ██╔████╔██║██║   ██║██╔██╗ ██║\n" +
+            "██╔═══╝ ██║   ██║██╔═██╗ ██╔══╝  ██║╚██╔╝██║██║   ██║██║╚██╗██║\n" +
+            "██║     ╚██████╔╝██║  ██╗███████╗██║ ╚═╝ ██║╚██████╔╝██║ ╚████║\n" +
+            "╚═╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝\n"
+        );
     }
 }

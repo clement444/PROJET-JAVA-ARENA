@@ -51,7 +51,7 @@ public class Dresseur {
     }
 
     public void genererEquipeDepart() {
-    Random random = new Random();
+        Random random = new Random();
 
         for (int i = 0; i < 3; i++) {
             int choix = random.nextInt(3);
@@ -71,7 +71,7 @@ public class Dresseur {
     }
 
     public void afficherEquipe() {
-    System.out.println("Etat de l'equipe :");
+        System.out.println("Etat de l'equipe :");
 
         for (int i = 0; i < equipe.size(); i++) {
             Pokemon p = equipe.get(i);
@@ -104,8 +104,7 @@ public class Dresseur {
         throws ActionInterditeException {
 
         if (!inventaire.containsKey("Potion") || inventaire.get("Potion") <= 0) {
-            System.out.println("Aucune potion disponible.");
-            return;
+            throw new ActionInterditeException("Aucune potion disponible.");
         }
 
         if (indexPokemon < 0 || indexPokemon >= equipe.size()) {
@@ -127,5 +126,9 @@ public class Dresseur {
 
         System.out.println(p.getNom() + " est soigné. PV : "
                 + p.getPv() + "/" + p.getPvMax());
+    }
+
+    public Map<String, Integer> getInventaire() {
+        return inventaire;
     }
 }
