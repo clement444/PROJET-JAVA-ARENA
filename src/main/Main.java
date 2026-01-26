@@ -90,8 +90,9 @@ public class Main {
             System.out.println("=== MENU PARTIE ===");
             System.out.println("1 - Afficher l'équipe");
             System.out.println("2 - Lancer un combat");
-            System.out.println("3 - Afficher les crédits");
-            System.out.println("4 - Retour au menu principal");
+            System.out.println("3 - Utiliser un objet");
+            System.out.println("4 - Afficher les crédits");
+            System.out.println("5 - Retour au menu principal");
             System.out.print("Votre choix : ");
 
             if (scanner.hasNextInt()) {
@@ -111,10 +112,14 @@ public class Main {
                     return; 
 
                 case 3:
+                    menuUtiliserObjet(scanner, dresseur);
+                    break;
+
+                case 4:
                     System.out.println("Crédits : " + dresseur.getCredits());
                     break;
                     
-                case 4:
+                case 5:
                     return;
                 default:
                     System.out.println("Choix invalide.");
@@ -245,6 +250,50 @@ public class Main {
                 }
             } else {
                 System.out.println("Choix invalide.");
+            }
+        }
+    }
+
+    private static void menuUtiliserObjet(Scanner scanner, Dresseur dresseur) {
+    int choix = -1;
+
+        while (choix != 3) {
+            System.out.println();
+            System.out.println("=== UTILISER UN OBJET ===");
+            System.out.println("1 - Potion");
+            System.out.println("2 - Rappel");
+            System.out.println("3 - Retour");
+            System.out.print("Votre choix : ");
+
+            if (scanner.hasNextInt()) {
+                choix = scanner.nextInt();
+            } else {
+                scanner.next();
+                continue;
+            }
+
+            try {
+                switch (choix) {
+                    case 1:
+                        dresseur.afficherEquipe();
+                        System.out.print("Choisissez le Pokémon à soigner : ");
+                        dresseur.utiliserPotion(scanner.nextInt() - 1);
+                        break;
+
+                    case 2:
+                        dresseur.afficherEquipe();
+                        System.out.print("Choisissez le Pokémon à ressusciter : ");
+                        dresseur.utiliserRappel(scanner.nextInt() - 1);
+                        break;
+
+                    case 3:
+                        return;
+
+                    default:
+                        System.out.println("Choix invalide.");
+                }
+            } catch (ActionInterditeException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
