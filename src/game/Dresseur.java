@@ -204,4 +204,13 @@ public class Dresseur {
 
         System.out.println(pokemon.getNom() + " a été capturé !");
     }
+    
+    public boolean equipeKO() {
+        for (Pokemon p : equipe) {
+            if (!p.estKO()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

@@ -1,8 +1,7 @@
-NOM_EQUIPE;Ynov
+NOM_EQUIPE;Ynov2
 EQUIPE
-PokemonPlante;Florizarre;100;100
-PokemonFeu;Reptincel;100;100
-PokemonEau;Stari;100;100
+PokemonPlante;Mystherbe;0;100
+PokemonEau;Stari;80;100
+PokemonPlante;Rafflesia;100;100
 INVENTAIRE
-Potion;2
-Pokeball;1
+Rappel;0

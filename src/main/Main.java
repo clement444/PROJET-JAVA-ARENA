@@ -62,6 +62,12 @@ public class Main {
                 case 2:
                     try {
                         dresseur = SaveManager.charger();
+
+                        if (dresseur.equipeKO() && dresseur.getCredits() < 20) {
+                        System.out.println("Impossible de charger la partie.");
+                        System.out.println("Toute l'équipe est KO et les crédits sont insuffisants.");
+                        break;
+                    }
                         System.out.println("Partie chargée !");
                         System.out.println("Equipe chargée : " + dresseur.getNomEquipe());
                         lancerPartie(scanner, dresseur);
@@ -154,7 +160,47 @@ public class Main {
 
         System.out.println("Un " + sauvage.getNom() + " sauvage apparaît !");
 
-        while (!joueur.estKO() && !sauvage.estKO()) {
+        while (!sauvage.estKO()) {
+
+            if (joueur.estKO()) {
+            int choixKO = -1;
+
+            while (choixKO != 1 && choixKO != 2) {
+                System.out.println();
+                System.out.println("Votre Pokémon est KO !");
+                System.out.println("1 - Utiliser un objet (Rappel)");
+                System.out.println("2 - Changer de Pokémon");
+                System.out.print("Votre choix : ");
+
+                if (scanner.hasNextInt()) {
+                    choixKO = scanner.nextInt();
+                    scanner.nextLine();
+                } else {
+                    scanner.nextLine();
+                    System.out.println("Choix invalide, veuillez entrer un nombre.");
+                    continue;
+                }
+
+                switch (choixKO) {
+                    case 1:
+                        menuObjetCombat(scanner, dresseur, sauvage);
+                        if (joueur.estKO()) {
+                            System.out.println("Vous devez choisir un Pokémon valide.");
+                            choixKO = -1; // on force à reposer la question
+                        }
+
+                        break;
+
+                    case 2:
+                        joueur = choisirPokemon(scanner, dresseur);
+                        break;
+
+                    default:
+                        System.out.println("Choix invalide.");
+                }
+            }
+        }
+
 
             System.out.println();
             System.out.println("=== MENU COMBAT ===");
@@ -199,6 +245,14 @@ public class Main {
 
                 if (!sauvage.estKO()) {
                     Combat.attaquer(sauvage, joueur);
+                }
+
+                if (dresseur.equipeKO()) {
+                    System.out.println();
+                    System.out.println("Tous vos Pokémon sont KO...");
+                    System.out.println("Vous avez perdu le combat.");
+                    System.out.println("Retentez votre chance dans une nouvelle partie");
+                    return;
                 }
 
                 if (sauvage.estKO()) {
