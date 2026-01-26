@@ -1,59 +1,61 @@
 package main;
 
-import java.util.Random;
 import java.util.Scanner;
-
-import combat.Combat;
-import exceptions.ActionInterditeException;
-import game.Dresseur;
-import models.Pokemon;
-import models.PokemonEau;
-import models.PokemonFeu;
-import models.PokemonPlante;
-import save.SaveManager;
+import java.util.Random;
 import java.io.IOException;
 
-
+import game.Dresseur;
+import models.Pokemon;
+import models.PokemonFeu;
+import models.PokemonEau;
+import models.PokemonPlante;
+import combat.Combat;
+import save.SaveManager;
+import exceptions.ActionInterditeException;
 
 public class Main {
-   
-    public static void main(String[] args) { 
+
+    public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
 
         afficherLogoPokemon();
-        System.out.println("=== Bienvenue dans le jeu Pokemon ===");
-        System.out.println("Chargement du jeu...");
-        System.out.print("Nom de votre équipe : ");
-        String nomEquipe = scanner.nextLine();
 
-        Dresseur dresseur = new Dresseur(nomEquipe);
-        dresseur.genererEquipeDepart();
-        dresseur.ajouterObjet("Potion", 2);
-        dresseur.ajouterObjet("Pokeball", 1);
-        dresseur.ajouterObjet("Rappel", 1);
-
+        Dresseur dresseur = null;
         int choix = -1;
 
-        System.out.println("Equipe \"" + nomEquipe + "\" enregistrée.");
+        System.out.println("=== Bienvenue dans le jeu Pokemon ===");
 
         while (choix != 3) {
-
             System.out.println();
             System.out.println("=== MENU PRINCIPAL ===");
             System.out.println("1 - Nouvelle partie");
             System.out.println("2 - Charger une partie");
             System.out.println("3 - Quitter");
             System.out.print("Votre choix : ");
-            
+
             if (scanner.hasNextInt()) {
                 choix = scanner.nextInt();
+                scanner.nextLine();
             } else {
-                scanner.next();
-                choix = -1;
+                scanner.nextLine();
+                continue;
             }
-            
+
             switch (choix) {
+
                 case 1:
+                    System.out.print("Nom de votre équipe : ");
+                    String nomEquipe = scanner.nextLine();
+
+                    dresseur = new Dresseur(nomEquipe);
+                    dresseur.genererEquipeDepart();
+
+                    dresseur.ajouterObjet("Potion", 2);
+                    dresseur.ajouterObjet("Pokeball", 1);
+                    dresseur.ajouterObjet("Rappel", 1);
+
+                    System.out.println("Equipe créée !");
                     lancerPartie(scanner, dresseur);
                     break;
 
@@ -61,17 +63,20 @@ public class Main {
                     try {
                         dresseur = SaveManager.charger();
                         System.out.println("Partie chargée !");
+                        lancerPartie(scanner, dresseur);
                     } catch (IOException e) {
                         System.out.println("Aucune sauvegarde trouvée.");
                     }
                     break;
 
                 case 3:
-                    try {
-                        SaveManager.sauvegarder(dresseur);
-                        System.out.println("Partie sauvegardée.");
-                    } catch (IOException e) {
-                        System.out.println("Erreur lors de la sauvegarde.");
+                    if (dresseur != null) {
+                        try {
+                            SaveManager.sauvegarder(dresseur);
+                            System.out.println("Partie sauvegardée.");
+                        } catch (IOException e) {
+                            System.out.println("Erreur lors de la sauvegarde.");
+                        }
                     }
                     System.out.println("Au revoir !");
                     break;
@@ -82,25 +87,28 @@ public class Main {
         }
     }
 
+    /* ===================== MENU PARTIE ===================== */
+
     private static void lancerPartie(Scanner scanner, Dresseur dresseur) {
+
         int choix = -1;
 
-        while (choix != 3) {
+        while (choix != 5) {
             System.out.println();
             System.out.println("=== MENU PARTIE ===");
             System.out.println("1 - Afficher l'équipe");
             System.out.println("2 - Lancer un combat");
-            System.out.println("3 - Utiliser un objet");
-            System.out.println("4 - Boutique");
-            System.out.println("5 - Afficher les crédits");
-            System.out.println("6 - Retour au menu principal");
+            System.out.println("3 - Boutique");
+            System.out.println("4 - Afficher les crédits");
+            System.out.println("5 - Retour menu principal");
             System.out.print("Votre choix : ");
 
             if (scanner.hasNextInt()) {
                 choix = scanner.nextInt();
+                scanner.nextLine();
             } else {
-                scanner.next();
-                choix = -1;
+                scanner.nextLine();
+                continue;
             }
 
             switch (choix) {
@@ -109,202 +117,138 @@ public class Main {
                     break;
 
                 case 2:
-                    lancerCombatSimple(scanner, dresseur);
-                    return; 
-
-                case 3:
-                    menuUtiliserObjet(scanner, dresseur);
+                    lancerCombat(scanner, dresseur);
                     break;
 
-                case 4:
+                case 3:
                     menuBoutique(scanner, dresseur);
                     break;
 
-                case 5:
+                case 4:
                     System.out.println("Crédits : " + dresseur.getCredits());
                     break;
-                    
-                case 6:
+
+                case 5:
                     return;
+
                 default:
                     System.out.println("Choix invalide.");
             }
         }
     }
 
+    /* ===================== COMBAT ===================== */
 
-    private static void afficherLogoPokemon() {
-        System.out.println(
-            "██████╗  ██████╗ ██╗  ██╗███████╗███╗   ███╗ ██████╗ ███╗   ██╗\n" +
-            "██╔══██╗██╔═══██╗██║ ██╔╝██╔════╝████╗ ████║██╔═══██╗████╗  ██║\n" +
-            "██████╔╝██║   ██║█████╔╝ █████╗  ██╔████╔██║██║   ██║██╔██╗ ██║\n" +
-            "██╔═══╝ ██║   ██║██╔═██╗ ██╔══╝  ██║╚██╔╝██║██║   ██║██║╚██╗██║\n" +
-            "██║     ╚██████╔╝██║  ██╗███████╗██║ ╚═╝ ██║╚██████╔╝██║ ╚████║\n" +
-            "╚═╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝\n"
-        );
-    }
+    private static void lancerCombat(Scanner scanner, Dresseur dresseur) {
 
-    private static Pokemon genererPokemonSauvage() {
-        Random random = new Random();
-        int choix = random.nextInt(3);
-
-        switch (choix) {
-            case 0:
-                return new PokemonFeu("Pokemon Feu sauvage");
-            case 1:
-                return new PokemonEau("Pokemon Eau sauvage");
-            default:
-                return new PokemonPlante("Pokemon Plante sauvage");
-        }
-    }
-
-    private static void lancerCombatSimple(Scanner scanner, Dresseur dresseur) {
         Pokemon sauvage = genererPokemonSauvage();
         Pokemon joueur = choisirPokemon(scanner, dresseur);
-        System.out.println("Un " + sauvage.getNom() + " apparaît !");
-        System.out.println("Combat entre " + joueur.getNom() + " et " + sauvage.getNom());
 
-        try {
-            while (!joueur.estKO() && !sauvage.estKO()) {
+        System.out.println("Un " + sauvage.getNom() + " sauvage apparaît !");
 
-                System.out.println();
-                System.out.println("Tour du joueur");
-                Combat.attaquer(joueur, sauvage);
+        while (!joueur.estKO() && !sauvage.estKO()) {
 
-                if (!sauvage.estKO()) {
-                System.out.print("Voulez-vous tenter une capture ? (1 = oui / 0 = non) : ");
-
-                int choix = scanner.hasNextInt() ? scanner.nextInt() : 0;
-                scanner.nextLine();
-
-                if (choix == 1) {
-                    try {
-                        dresseur.capturerPokemon(sauvage);
-                        System.out.println("Fin du combat.");
-                        return;
-                    } catch (ActionInterditeException e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
-            }
-
-                if (sauvage.estKO()) {
-                    int gain = 10;
-                    dresseur.ajouterCredits(gain);
-
-                    System.out.println("Le Pokemon sauvage est vaincu !");
-                    System.out.println("Vous gagnez " + gain + " crédits.");
-                    System.out.println("Crédits actuels : " + dresseur.getCredits());
-                                    
-                    break;
-                }
-
-                System.out.println();
-                System.out.println("Tour du Pokemon sauvage");
-                Combat.attaquer(sauvage, joueur);
-
-                if (joueur.estKO()) {
-                    System.out.println("Votre Pokemon est KO !");
-                    break;
-                }
-            }
-        } catch (ActionInterditeException e) {
-            System.out.println(e.getMessage());
-        }
-        if (!sauvage.estKO()) {
-
-        System.out.print("Tenter une capture ? (1 = oui / 0 = non) : ");
-
-        int choix = scanner.hasNextInt() ? scanner.nextInt() : 0;
-        scanner.nextLine();
-
-            if (choix == 1) {
-                try {
-                    dresseur.capturerPokemon(sauvage);
-                    System.out.println("Fin du combat.");
-                    return; // on sort du combat
-                } catch (ActionInterditeException e) {
-                    System.out.println(e.getMessage());
-                }
-            }
-        }
-    }
-
-    private static Pokemon choisirPokemon(Scanner scanner, Dresseur dresseur) {
-        int choix = -1;
-
-        while (true) {
-            System.out.println("Choisissez un Pokemon :");
-            dresseur.afficherEquipe();
-            System.out.print("Votre choix : ");
-
-            if (scanner.hasNextInt()) {
-                choix = scanner.nextInt() - 1;
-            } else {
-                scanner.next();
-                continue;
-            }
-
-            if (choix >= 0 && choix < dresseur.getEquipe().size()) {
-                Pokemon p = dresseur.getEquipe().get(choix);
-
-                if (!p.estKO()) {
-                    return p;
-                } else {
-                    System.out.println("Ce Pokemon est KO.");
-                }
-            } else {
-                System.out.println("Choix invalide.");
-            }
-        }
-    }
-
-    private static void menuUtiliserObjet(Scanner scanner, Dresseur dresseur) {
-    int choix = -1;
-
-        while (choix != 3) {
             System.out.println();
-            System.out.println("=== UTILISER UN OBJET ===");
-            System.out.println("1 - Potion");
-            System.out.println("2 - Rappel");
-            System.out.println("3 - Retour");
+            System.out.println("=== MENU COMBAT ===");
+            System.out.println("1 - Attaquer");
+            System.out.println("2 - Utiliser un objet");
+            System.out.println("3 - Fuir");
             System.out.print("Votre choix : ");
 
-            if (scanner.hasNextInt()) {
-                choix = scanner.nextInt();
-            } else {
-                scanner.next();
-                continue;
-            }
+            int choix = scanner.hasNextInt() ? scanner.nextInt() : -1;
+            scanner.nextLine();
 
             try {
                 switch (choix) {
+
                     case 1:
-                        dresseur.afficherEquipe();
-                        System.out.print("Choisissez le Pokémon à soigner : ");
-                        dresseur.utiliserPotion(scanner.nextInt() - 1);
+                        Combat.attaquer(joueur, sauvage);
                         break;
 
                     case 2:
-                        dresseur.afficherEquipe();
-                        System.out.print("Choisissez le Pokémon à ressusciter : ");
-                        dresseur.utiliserRappel(scanner.nextInt() - 1);
+                        menuObjetCombat(scanner, dresseur, sauvage);
+                        if (dresseur.getEquipe().contains(sauvage)) {
+                            return; // capture réussie
+                        }
                         break;
 
                     case 3:
+                        System.out.println("Vous fuyez le combat.");
                         return;
 
                     default:
                         System.out.println("Choix invalide.");
+                        continue;
                 }
+
+                if (!sauvage.estKO()) {
+                    Combat.attaquer(sauvage, joueur);
+                }
+
+                if (sauvage.estKO()) {
+                    dresseur.ajouterCredits(10);
+                    System.out.println("Pokemon sauvage vaincu !");
+                    System.out.println("Vous gagnez 10 crédits.");
+                }
+
             } catch (ActionInterditeException e) {
                 System.out.println(e.getMessage());
             }
         }
     }
 
+    /* ===================== OBJETS (COMBAT) ===================== */
+
+    private static void menuObjetCombat(
+            Scanner scanner,
+            Dresseur dresseur,
+            Pokemon sauvage) {
+
+        System.out.println();
+        System.out.println("=== UTILISER UN OBJET ===");
+        System.out.println("1 - Potion");
+        System.out.println("2 - Rappel");
+        System.out.println("3 - Pokéball (capture)");
+        System.out.println("4 - Retour");
+        System.out.print("Votre choix : ");
+
+        int choix = scanner.hasNextInt() ? scanner.nextInt() : -1;
+        scanner.nextLine();
+
+        try {
+            switch (choix) {
+                case 1:
+                    dresseur.afficherEquipe();
+                    System.out.print("Choisissez le Pokémon : ");
+                    dresseur.utiliserPotion(scanner.nextInt() - 1);
+                    break;
+
+                case 2:
+                    dresseur.afficherEquipe();
+                    System.out.print("Choisissez le Pokémon : ");
+                    dresseur.utiliserRappel(scanner.nextInt() - 1);
+                    break;
+
+                case 3:
+                    dresseur.capturerPokemon(sauvage);
+                    break;
+
+                case 4:
+                    return;
+
+                default:
+                    System.out.println("Choix invalide.");
+            }
+        } catch (ActionInterditeException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /* ===================== BOUTIQUE ===================== */
+
     private static void menuBoutique(Scanner scanner, Dresseur dresseur) {
-    int choix = -1;
+
+        int choix = -1;
 
         while (choix != 4) {
             System.out.println();
@@ -317,8 +261,9 @@ public class Main {
 
             if (scanner.hasNextInt()) {
                 choix = scanner.nextInt();
+                scanner.nextLine();
             } else {
-                scanner.next();
+                scanner.nextLine();
                 continue;
             }
 
@@ -339,16 +284,66 @@ public class Main {
             }
         }
     }
-    
+
     private static void acheterObjet(Dresseur dresseur, String nom, int prix) {
         if (dresseur.getCredits() < prix) {
             System.out.println("Crédits insuffisants.");
             return;
         }
-
         dresseur.ajouterCredits(-prix);
         dresseur.ajouterObjet(nom, 1);
-
         System.out.println(nom + " acheté !");
+    }
+
+    /* ===================== OUTILS ===================== */
+
+    private static Pokemon genererPokemonSauvage() {
+        Random random = new Random();
+        int type = random.nextInt(3);
+
+        switch (type) {
+            case 0:
+                return new PokemonFeu("Pokemon Feu sauvage");
+            case 1:
+                return new PokemonEau("Pokemon Eau sauvage");
+            default:
+                return new PokemonPlante("Pokemon Plante sauvage");
+        }
+    }
+
+    private static Pokemon choisirPokemon(Scanner scanner, Dresseur dresseur) {
+        int choix;
+
+        while (true) {
+            dresseur.afficherEquipe();
+            System.out.print("Choisissez un Pokémon : ");
+
+            if (scanner.hasNextInt()) {
+                choix = scanner.nextInt() - 1;
+                scanner.nextLine();
+            } else {
+                scanner.nextLine();
+                continue;
+            }
+
+            if (choix >= 0 && choix < dresseur.getEquipe().size()) {
+                Pokemon p = dresseur.getEquipe().get(choix);
+                if (!p.estKO()) {
+                    return p;
+                } else {
+                    System.out.println("Ce Pokémon est KO.");
+                }
+            }
+        }
+    }
+    private static void afficherLogoPokemon() {
+        System.out.println(
+            "██████╗  ██████╗ ██╗  ██╗███████╗███╗   ███╗ ██████╗ ███╗   ██╗\n" +
+            "██╔══██╗██╔═══██╗██║ ██╔╝██╔════╝████╗ ████║██╔═══██╗████╗  ██║\n" +
+            "██████╔╝██║   ██║█████╔╝ █████╗  ██╔████╔██║██║   ██║██╔██╗ ██║\n" +
+            "██╔═══╝ ██║   ██║██╔═██╗ ██╔══╝  ██║╚██╔╝██║██║   ██║██║╚██╗██║\n" +
+            "██║     ╚██████╔╝██║  ██╗███████╗██║ ╚═╝ ██║╚██████╔╝██║ ╚████║\n" +
+            "╚═╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝\n"
+        );
     }
 }
