@@ -147,12 +147,26 @@ public class Main {
         System.out.println("Combat entre " + joueur.getNom() + " et " + sauvage.getNom());
 
         try {
-            Combat.attaquer(joueur, sauvage);
+            while (!joueur.estKO() && !sauvage.estKO()) {
 
-            if (!sauvage.estKO()) {
+                System.out.println();
+                System.out.println("Tour du joueur");
+                Combat.attaquer(joueur, sauvage);
+
+                if (sauvage.estKO()) {
+                    System.out.println("Le Pokemon sauvage est vaincu !");
+                    break;
+                }
+
+                System.out.println();
+                System.out.println("Tour du Pokemon sauvage");
                 Combat.attaquer(sauvage, joueur);
-            }
 
+                if (joueur.estKO()) {
+                    System.out.println("Votre Pokemon est KO !");
+                    break;
+                }
+            }
         } catch (ActionInterditeException e) {
             System.out.println(e.getMessage());
         }
