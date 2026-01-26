@@ -142,8 +142,7 @@ public class Main {
 
     private static void lancerCombatSimple(Scanner scanner, Dresseur dresseur) {
         Pokemon sauvage = genererPokemonSauvage();
-        Pokemon joueur = dresseur.getEquipe().get(0);
-
+        Pokemon joueur = choisirPokemon(scanner, dresseur);
         System.out.println("Un " + sauvage.getNom() + " apparaît !");
         System.out.println("Combat entre " + joueur.getNom() + " et " + sauvage.getNom());
 
@@ -156,6 +155,35 @@ public class Main {
 
         } catch (ActionInterditeException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    private static Pokemon choisirPokemon(Scanner scanner, Dresseur dresseur) {
+        int choix = -1;
+
+        while (true) {
+            System.out.println("Choisissez un Pokemon :");
+            dresseur.afficherEquipe();
+            System.out.print("Votre choix : ");
+
+            if (scanner.hasNextInt()) {
+                choix = scanner.nextInt() - 1;
+            } else {
+                scanner.next();
+                continue;
+            }
+
+            if (choix >= 0 && choix < dresseur.getEquipe().size()) {
+                Pokemon p = dresseur.getEquipe().get(choix);
+
+                if (!p.estKO()) {
+                    return p;
+                } else {
+                    System.out.println("Ce Pokemon est KO.");
+                }
+            } else {
+                System.out.println("Choix invalide.");
+            }
         }
     }
 }
