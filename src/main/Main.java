@@ -46,11 +46,7 @@ public class Main {
             
             switch (choix) {
                 case 1:
-                    try {
-                    dresseur.utiliserPotion(0);
-                        } catch (ActionInterditeException e) {
-                            System.out.println(e.getMessage());
-                    }
+                    lancerPartie(scanner, dresseur);
                     break;
 
                 case 2:
@@ -77,6 +73,40 @@ public class Main {
             }
         }
     }
+
+    private static void lancerPartie(Scanner scanner, Dresseur dresseur) {
+        int choix = -1;
+
+        while (choix != 3) {
+            System.out.println();
+            System.out.println("=== MENU PARTIE ===");
+            System.out.println("1 - Afficher l'équipe");
+            System.out.println("2 - Retour au menu principal");
+            System.out.println("3 - Quitter la partie");
+            System.out.print("Votre choix : ");
+
+            if (scanner.hasNextInt()) {
+                choix = scanner.nextInt();
+            } else {
+                scanner.next();
+                choix = -1;
+            }
+
+            switch (choix) {
+                case 1:
+                    dresseur.afficherEquipe();
+                    break;
+                case 2:
+                    return; // retour au menu principal
+                case 3:
+                    System.out.println("Fin de la partie.");
+                    return;
+                default:
+                    System.out.println("Choix invalide.");
+            }
+        }
+    }
+
 
     private static void afficherLogoPokemon() {
         System.out.println(
