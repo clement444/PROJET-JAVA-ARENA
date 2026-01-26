@@ -38,4 +38,11 @@ public abstract class Pokemon {
             pv = 0;
         }
     }
+    
+    public void soigner(int points) {
+        pv += points;
+        if (pv > pvMax) {
+            pv = pvMax;
+        }
+    }
 }

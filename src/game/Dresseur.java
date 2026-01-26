@@ -97,4 +97,31 @@ public class Dresseur {
             System.out.println("- " + nomObjet + " x" + inventaire.get(nomObjet));
         }
     }
+    
+    public void utiliserPotion(int indexPokemon) {
+
+        if (!inventaire.containsKey("Potion") || inventaire.get("Potion") <= 0) {
+            System.out.println("Aucune potion disponible.");
+            return;
+        }
+
+        if (indexPokemon < 0 || indexPokemon >= equipe.size()) {
+            System.out.println("Pokemon invalide.");
+            return;
+        }
+
+        Pokemon p = equipe.get(indexPokemon);
+
+        if (p.getPv() == p.getPvMax()) {
+            System.out.println(p.getNom() + " a déjà tous ses PV.");
+            return;
+        }
+
+        p.soigner(20);
+
+        inventaire.put("Potion", inventaire.get("Potion") - 1);
+
+        System.out.println(p.getNom() + " est soigné. PV : "
+                + p.getPv() + "/" + p.getPvMax());
+    }
 }

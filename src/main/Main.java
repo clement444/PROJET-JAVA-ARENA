@@ -49,7 +49,7 @@ public class Main {
             
             switch (choix) {
                 case 1:
-                    dresseur.afficherInventaire();;
+                    System.out.println("Nouvelle partie (à venir)");
                     break;
                 case 2:
                     System.out.println("Chargement de la partie (prochain truc à ajouté)");
