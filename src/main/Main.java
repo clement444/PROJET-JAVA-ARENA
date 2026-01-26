@@ -112,10 +112,9 @@ public class Main {
                 case 3:
                     System.out.println("Crédits : " + dresseur.getCredits());
                     break;
-
+                    
                 case 4:
                     return;
-                    
                 default:
                     System.out.println("Choix invalide.");
             }
@@ -160,6 +159,23 @@ public class Main {
                 System.out.println();
                 System.out.println("Tour du joueur");
                 Combat.attaquer(joueur, sauvage);
+
+                if (!sauvage.estKO()) {
+                System.out.print("Voulez-vous tenter une capture ? (1 = oui / 0 = non) : ");
+
+                int choix = scanner.hasNextInt() ? scanner.nextInt() : 0;
+                scanner.nextLine();
+
+                if (choix == 1) {
+                    try {
+                        dresseur.capturerPokemon(sauvage);
+                        System.out.println("Fin du combat.");
+                        return;
+                    } catch (ActionInterditeException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+            }
 
                 if (sauvage.estKO()) {
                     int gain = 10;

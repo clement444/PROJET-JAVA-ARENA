@@ -9,6 +9,7 @@ import models.PokemonPlante;
 import java.util.Map;
 import java.util.HashMap;
 import exceptions.ActionInterditeException;
+import models.PokemonData;
 
 
 
@@ -54,21 +55,33 @@ public class Dresseur {
         Random random = new Random();
 
         for (int i = 0; i < 3; i++) {
-            int choix = random.nextInt(3);
+            int type = random.nextInt(3);
 
-            switch (choix) {
+             switch (type) {
                 case 0:
-                    equipe.add(new PokemonFeu("Pokemon Feu"));
-                    break;
-                case 1:
-                    equipe.add(new PokemonEau("Pokemon Eau"));
-                    break;
-                case 2:
-                    equipe.add(new PokemonPlante("Pokemon Plante"));
-                    break;
-            }
+                String nomFeu = PokemonData.POKEMON_FEU[
+                    random.nextInt(PokemonData.POKEMON_FEU.length)
+                ];
+                equipe.add(new PokemonFeu(nomFeu));
+                break;
+
+            case 1:
+                String nomEau = PokemonData.POKEMON_EAU[
+                    random.nextInt(PokemonData.POKEMON_EAU.length)
+                ];
+                equipe.add(new PokemonEau(nomEau));
+                break;
+
+            case 2:
+                String nomPlante = PokemonData.POKEMON_PLANTE[
+                    random.nextInt(PokemonData.POKEMON_PLANTE.length)
+                ];
+                equipe.add(new PokemonPlante(nomPlante));
+                break;
         }
     }
+}
+
 
     public void afficherEquipe() {
         System.out.println("Etat de l'equipe :");
@@ -130,5 +143,26 @@ public class Dresseur {
 
     public Map<String, Integer> getInventaire() {
         return inventaire;
+    }
+
+    public void capturerPokemon(Pokemon pokemon)
+        throws ActionInterditeException {
+
+        if (!inventaire.containsKey("Pokeball") || inventaire.get("Pokeball") <= 0) {
+            throw new ActionInterditeException("Aucune Pokeball disponible.");
+        }
+
+        double pourcentagePv = (double) pokemon.getPv() / pokemon.getPvMax();
+
+        if (pourcentagePv > 0.3) {
+            throw new ActionInterditeException(
+                "Le Pokemon a plus de 30% de PV, capture impossible."
+            );
+        }
+
+        inventaire.put("Pokeball", inventaire.get("Pokeball") - 1);
+        equipe.add(pokemon);
+
+        System.out.println(pokemon.getNom() + " a été capturé !");
     }
 }
