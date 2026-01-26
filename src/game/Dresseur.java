@@ -1,15 +1,16 @@
 package game;
 
 import java.util.ArrayList;
-import models.Pokemon;
-import java.util.Random;
-import models.PokemonFeu;
-import models.PokemonEau;
-import models.PokemonPlante;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
 import exceptions.ActionInterditeException;
+import models.Pokemon;
 import models.PokemonData;
+import models.PokemonEau;
+import models.PokemonFeu;
+import models.PokemonPlante;
 
 
 
@@ -57,40 +58,46 @@ public class Dresseur {
         for (int i = 0; i < 3; i++) {
             int type = random.nextInt(3);
 
-             switch (type) {
+            switch (type) {
                 case 0:
-                String nomFeu = PokemonData.POKEMON_FEU[
-                    random.nextInt(PokemonData.POKEMON_FEU.length)
-                ];
-                equipe.add(new PokemonFeu(nomFeu));
-                break;
+                    String nomFeu = PokemonData.POKEMON_FEU[
+                        random.nextInt(PokemonData.POKEMON_FEU.length)
+                    ];
+                    equipe.add(new PokemonFeu(nomFeu));
+                    break;
 
-            case 1:
-                String nomEau = PokemonData.POKEMON_EAU[
-                    random.nextInt(PokemonData.POKEMON_EAU.length)
-                ];
-                equipe.add(new PokemonEau(nomEau));
-                break;
+                case 1:
+                    String nomEau = PokemonData.POKEMON_EAU[
+                        random.nextInt(PokemonData.POKEMON_EAU.length)
+                    ];
+                    equipe.add(new PokemonEau(nomEau));
+                    break;
 
-            case 2:
-                String nomPlante = PokemonData.POKEMON_PLANTE[
-                    random.nextInt(PokemonData.POKEMON_PLANTE.length)
-                ];
-                equipe.add(new PokemonPlante(nomPlante));
-                break;
+                case 2:
+                    String nomPlante = PokemonData.POKEMON_PLANTE[
+                        random.nextInt(PokemonData.POKEMON_PLANTE.length)
+                    ];
+                    equipe.add(new PokemonPlante(nomPlante));
+                    break;
+            }
         }
     }
-}
-
 
     public void afficherEquipe() {
-        System.out.println("Etat de l'equipe :");
+
+        System.out.println();
+        System.out.println("=== EQUIPE ===");
 
         for (int i = 0; i < equipe.size(); i++) {
             Pokemon p = equipe.get(i);
+
+             String type = p.getClass().getSimpleName()
+                .replace("Pokemon", "");
+
             System.out.println(
-                (i + 1) + " - " + p.getNom() +
-                " : " + p.getPv() + "/" + p.getPvMax() + " PV"
+            (i + 1) + " - " + p.getNom() +
+            " / " + type +
+            " : " + p.getPv() + "/" + p.getPvMax() + " PV"
             );
         }
     }
@@ -101,7 +108,9 @@ public class Dresseur {
     }
 
     public void afficherInventaire() {
-        System.out.println("Inventaire :");
+
+        System.out.println();
+        System.out.println("=== INVENTAIRE ===");
 
         if (inventaire.isEmpty()) {
             System.out.println("Aucun objet.");
@@ -121,8 +130,7 @@ public class Dresseur {
         }
 
         if (indexPokemon < 0 || indexPokemon >= equipe.size()) {
-            System.out.println("Pokemon invalide.");
-            return;
+            throw new ActionInterditeException("Pokemon invalide.");
         }
 
         Pokemon p = equipe.get(indexPokemon);
@@ -134,11 +142,12 @@ public class Dresseur {
         }
 
         p.soigner(20);
-
         inventaire.put("Potion", inventaire.get("Potion") - 1);
 
-        System.out.println(p.getNom() + " est soigné. PV : "
-                + p.getPv() + "/" + p.getPvMax());
+        System.out.println(
+            p.getNom() + " est soigné. PV : "
+            + p.getPv() + "/" + p.getPvMax()
+        );
     }
 
     public Map<String, Integer> getInventaire() {

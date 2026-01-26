@@ -38,6 +38,7 @@ public class Main {
                 choix = scanner.nextInt();
                 scanner.nextLine();
             } else {
+                System.out.println("Choix invalide, veuillez entrer un nombre.");
                 scanner.nextLine();
                 continue;
             }
@@ -51,11 +52,10 @@ public class Main {
                     dresseur = new Dresseur(nomEquipe);
                     dresseur.genererEquipeDepart();
 
-                    dresseur.ajouterObjet("Potion", 2);
-                    dresseur.ajouterObjet("Pokeball", 1);
-                    dresseur.ajouterObjet("Rappel", 1);
+                    dresseur.ajouterCredits(20);
 
-                    System.out.println("Equipe créée !");
+                    System.out.println("Equipe créée avec succès !");
+                    System.out.println("Vous commencez avec 20 crédits.");
                     lancerPartie(scanner, dresseur);
                     break;
 
@@ -63,6 +63,7 @@ public class Main {
                     try {
                         dresseur = SaveManager.charger();
                         System.out.println("Partie chargée !");
+                        System.out.println("Equipe chargée : " + dresseur.getNomEquipe());
                         lancerPartie(scanner, dresseur);
                     } catch (IOException e) {
                         System.out.println("Aucune sauvegarde trouvée.");
@@ -99,7 +100,7 @@ public class Main {
             System.out.println("1 - Afficher l'équipe");
             System.out.println("2 - Lancer un combat");
             System.out.println("3 - Boutique");
-            System.out.println("4 - Afficher les crédits");
+            System.out.println("4 - Afficher l'inventaire");
             System.out.println("5 - Retour menu principal");
             System.out.print("Votre choix : ");
 
@@ -107,6 +108,7 @@ public class Main {
                 choix = scanner.nextInt();
                 scanner.nextLine();
             } else {
+                System.out.println("Choix invalide, veuillez entrer un nombre.");
                 scanner.nextLine();
                 continue;
             }
@@ -125,10 +127,16 @@ public class Main {
                     break;
 
                 case 4:
-                    System.out.println("Crédits : " + dresseur.getCredits());
+                    dresseur.afficherInventaire();
                     break;
 
                 case 5:
+                    try {
+                        SaveManager.sauvegarder(dresseur);
+                        System.out.println("Partie sauvegardée.");
+                    } catch (IOException e) {
+                        System.out.println("Erreur lors de la sauvegarde.");
+                    }
                     return;
 
                 default:
@@ -151,12 +159,20 @@ public class Main {
             System.out.println();
             System.out.println("=== MENU COMBAT ===");
             System.out.println("1 - Attaquer");
-            System.out.println("2 - Utiliser un objet");
+            System.out.println("2 - Inventaire");
             System.out.println("3 - Fuir");
             System.out.print("Votre choix : ");
 
-            int choix = scanner.hasNextInt() ? scanner.nextInt() : -1;
-            scanner.nextLine();
+            int choix;
+
+            if (scanner.hasNextInt()) {
+                choix = scanner.nextInt();
+                scanner.nextLine();
+            } else {
+                System.out.println("Choix invalide, veuillez entrer un nombre.");
+                scanner.nextLine();
+                continue;
+            }
 
             try {
                 switch (choix) {
@@ -209,14 +225,23 @@ public class Main {
         int nbPokeballs = dresseur.getInventaire().getOrDefault("Pokeball", 0);
 
         System.out.println();
+        System.out.println("=== INVENTAIRE ===");
         System.out.println("1 - Potion x " + nbPotions);
         System.out.println("2 - Rappel x " + nbRappels);
         System.out.println("3 - Pokéball (capture) x " + nbPokeballs);
         System.out.println("4 - Retour");
         System.out.print("Votre choix : ");
 
-        int choix = scanner.hasNextInt() ? scanner.nextInt() : -1;
-        scanner.nextLine();
+        int choix;
+
+        if (scanner.hasNextInt()) {
+            choix = scanner.nextInt();
+            scanner.nextLine();
+        } else {
+            System.out.println("Choix invalide, veuillez entrer un nombre.");
+            scanner.nextLine();
+            return;
+        }
 
         try {
             switch (choix) {
@@ -256,9 +281,10 @@ public class Main {
         while (choix != 4) {
             System.out.println();
             System.out.println("=== BOUTIQUE ===");
+            System.out.println("Crédits disponibles : " + dresseur.getCredits());
             System.out.println("1 - Potion (5 crédits)");
-            System.out.println("2 - Rappel (10 crédits)");
-            System.out.println("3 - Pokéball (8 crédits)");
+            System.out.println("2 - Rappel (20 crédits)");
+            System.out.println("3 - Pokéball (10 crédits)");
             System.out.println("4 - Retour");
             System.out.print("Votre choix : ");
 
@@ -266,6 +292,7 @@ public class Main {
                 choix = scanner.nextInt();
                 scanner.nextLine();
             } else {
+                System.out.println("Choix invalide, veuillez entrer un nombre.");
                 scanner.nextLine();
                 continue;
             }
@@ -275,10 +302,10 @@ public class Main {
                     acheterObjet(dresseur, "Potion", 5);
                     break;
                 case 2:
-                    acheterObjet(dresseur, "Rappel", 10);
+                    acheterObjet(dresseur, "Rappel", 20);
                     break;
                 case 3:
-                    acheterObjet(dresseur, "Pokeball", 8);
+                    acheterObjet(dresseur, "Pokeball", 10);
                     break;
                 case 4:
                     return;

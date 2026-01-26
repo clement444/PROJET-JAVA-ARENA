@@ -15,7 +15,7 @@ public class Combat {
         }
 
         if (cible.estKO()) {
-             throw new ActionInterditeException(
+            throw new ActionInterditeException(
                 cible.getNom() + " est déjà KO."
             );
         }

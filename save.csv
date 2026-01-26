@@ -1,7 +1,8 @@
+NOM_EQUIPE;Ynov
 EQUIPE
-PokemonFeu;Pokemon Feu;20;100
-PokemonEau;Pokemon Eau;100;100
-PokemonPlante;Pokemon Plante;100;100
+PokemonPlante;Florizarre;100;100
+PokemonFeu;Reptincel;100;100
+PokemonEau;Stari;100;100
 INVENTAIRE
 Potion;2
 Pokeball;1

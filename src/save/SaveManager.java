@@ -6,7 +6,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 import game.Dresseur;
-import models.*;
+import models.Pokemon;
+import models.PokemonFeu;
+import models.PokemonEau;
+import models.PokemonPlante;
 
 public class SaveManager {
 
@@ -16,6 +19,8 @@ public class SaveManager {
         FileWriter writer = new FileWriter(FILE_NAME);
 
         // Sauvegarde équipe
+        
+        writer.write("NOM_EQUIPE;" + dresseur.getNomEquipe() + "\n");
         writer.write("EQUIPE\n");
         for (Pokemon p : dresseur.getEquipe()) {
             writer.write(
@@ -26,7 +31,6 @@ public class SaveManager {
             );
         }
 
-        // Sauvegarde inventaire
         writer.write("INVENTAIRE\n");
         dresseur.getInventaire().forEach((nom, quantite) -> {
             try {
@@ -48,6 +52,12 @@ public class SaveManager {
         boolean lectureInventaire = false;
 
         while ((ligne = reader.readLine()) != null) {
+
+            if (ligne.startsWith("NOM_EQUIPE")) {
+                String[] infos = ligne.split(";");
+                dresseur = new Dresseur(infos[1]);
+                continue;
+            }
 
             if (ligne.equals("EQUIPE")) {
                 lectureEquipe = true;
@@ -78,12 +88,14 @@ public class SaveManager {
                         break;
                 }
 
-                if (dresseur == null) {
-                    dresseur = new Dresseur("Equipe chargée");
-                }
+                if (p != null) {
+                    if (dresseur == null) {
+                        dresseur = new Dresseur("Equipe chargée");
+                    }
 
-                p.perdrePv(p.getPvMax() - Integer.parseInt(parts[2]));
-                dresseur.ajouterPokemon(p);
+                    p.perdrePv(p.getPvMax() - Integer.parseInt(parts[2]));
+                    dresseur.ajouterPokemon(p);
+                }
             }
 
             if (lectureInventaire && dresseur != null) {
