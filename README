@@ -1,0 +1,107 @@
+🎮 Projet Java — Pokémon Arena (Console)
+📌 Présentation
+
+Ce projet est un jeu console en Java, réalisé dans le cadre du cours de Découverte de la Programmation Orientée Objet (POO).
+
+Le joueur incarne un Dresseur possédant une équipe de Pokémon.
+Il peut lancer des combats, utiliser des objets, capturer des Pokémon sauvages, gagner des crédits et sauvegarder sa progression.
+
+Le projet respecte strictement le cahier des charges fourni et se limite aux notions vues en cours.
+
+🧠 Concepts utilisés
+
+Programmation Orientée Objet (POO)
+
+Classes
+
+Héritage
+
+Polymorphisme
+
+Encapsulation
+
+Collections
+
+ArrayList pour l’équipe
+
+HashMap pour l’inventaire
+
+Exceptions personnalisées
+
+Lecture / écriture de fichiers (CSV)
+
+Utilisation de la console (Scanner)
+
+🕹️ Fonctionnalités
+🎒 Dresseur
+
+Possède une équipe de Pokémon
+
+Possède un inventaire (Potion, Rappel, Pokéball)
+
+Gagne des crédits après les combats
+
+🐾 Pokémon
+
+Types : Feu / Eau / Plante
+
+Points de Vie (PV)
+
+Attaques avec avantage de type (Pierre-Feuille-Ciseaux)
+
+Pokémon KO non utilisables
+
+⚔️ Combat
+
+Combat contre un Pokémon sauvage aléatoire
+
+Menu de combat :
+
+Attaquer
+
+Utiliser un objet
+
+Fuir
+
+Capture possible uniquement si le Pokémon a ≤ 30 % de PV
+
+🛍️ Boutique
+
+Achat d’objets contre des crédits :
+
+Potion
+
+Rappel
+
+Pokéball
+
+💾 Sauvegarde
+
+Sauvegarde de :
+
+l’équipe (type, nom, PV)
+
+l’inventaire
+
+Fichier texte au format CSV
+
+Chargement automatique possible au démarrage
+
+📂 Organisation du projet
+src/
+ ├─ main/        → Classe Main (menus, interactions)
+ ├─ game/        → Dresseur
+ ├─ models/      → Pokémon et données
+ ├─ combat/      → Gestion des combats
+ ├─ inventory/  → Gestion des objets
+ ├─ save/        → Sauvegarde / chargement
+ ├─ exceptions/  → Exceptions personnalisées
+
+▶️ Compilation et exécution
+🔨 Compilation
+
+À la racine du projet :
+javac src\main\*.java src\models\*.java src\combat\*.java src\game\*.java src\exceptions\*.java src\save\*.java
+
+▶️ Lancement
+java -cp src main.Main
