@@ -1,8 +1,15 @@
 package main;
 
+import java.util.Random;
 import java.util.Scanner;
+
+import combat.Combat;
 import exceptions.ActionInterditeException;
 import game.Dresseur;
+import models.Pokemon;
+import models.PokemonEau;
+import models.PokemonFeu;
+import models.PokemonPlante;
 import save.SaveManager;
 import java.io.IOException;
 
@@ -81,8 +88,8 @@ public class Main {
             System.out.println();
             System.out.println("=== MENU PARTIE ===");
             System.out.println("1 - Afficher l'équipe");
-            System.out.println("2 - Retour au menu principal");
-            System.out.println("3 - Quitter la partie");
+            System.out.println("2 - Lancer un combat");
+            System.out.println("3 - Retour au menu principal");
             System.out.print("Votre choix : ");
 
             if (scanner.hasNextInt()) {
@@ -97,9 +104,9 @@ public class Main {
                     dresseur.afficherEquipe();
                     break;
                 case 2:
-                    return; // retour au menu principal
+                    lancerCombatSimple(scanner, dresseur);
+                    return; 
                 case 3:
-                    System.out.println("Fin de la partie.");
                     return;
                 default:
                     System.out.println("Choix invalide.");
@@ -117,5 +124,38 @@ public class Main {
             "██║     ╚██████╔╝██║  ██╗███████╗██║ ╚═╝ ██║╚██████╔╝██║ ╚████║\n" +
             "╚═╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝\n"
         );
+    }
+
+    private static Pokemon genererPokemonSauvage() {
+        Random random = new Random();
+        int choix = random.nextInt(3);
+
+        switch (choix) {
+            case 0:
+                return new PokemonFeu("Pokemon Feu sauvage");
+            case 1:
+                return new PokemonEau("Pokemon Eau sauvage");
+            default:
+                return new PokemonPlante("Pokemon Plante sauvage");
+        }
+    }
+
+    private static void lancerCombatSimple(Scanner scanner, Dresseur dresseur) {
+        Pokemon sauvage = genererPokemonSauvage();
+        Pokemon joueur = dresseur.getEquipe().get(0);
+
+        System.out.println("Un " + sauvage.getNom() + " apparaît !");
+        System.out.println("Combat entre " + joueur.getNom() + " et " + sauvage.getNom());
+
+        try {
+            Combat.attaquer(joueur, sauvage);
+
+            if (!sauvage.estKO()) {
+                Combat.attaquer(sauvage, joueur);
+            }
+
+        } catch (ActionInterditeException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
