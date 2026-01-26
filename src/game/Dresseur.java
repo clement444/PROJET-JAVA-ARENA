@@ -61,4 +61,17 @@ public class Dresseur {
             }
         }
     }
+    
+    public void afficherEquipe() {
+    System.out.println("Etat de l'equipe :");
+
+        for (int i = 0; i < equipe.size(); i++) {
+            Pokemon p = equipe.get(i);
+            System.out.println(
+                (i + 1) + " - " + p.getNom() +
+                " : " + p.getPv() + "/" + p.getPvMax() + " PV"
+            );
+        }
+    }
+
 }

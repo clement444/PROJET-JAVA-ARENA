@@ -48,7 +48,7 @@ public class Main {
                     System.out.println("Nouvelle partie (prochain truc à ajouté)");
                     break;
                 case 2:
-                    System.out.println("Chargement de la partie (prochain truc à ajouté)");
+                    dresseur.afficherEquipe();
                     break;
                 case 3:
                     System.out.println("Au revoir !");
