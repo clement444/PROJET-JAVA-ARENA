@@ -89,7 +89,8 @@ public class Main {
             System.out.println("=== MENU PARTIE ===");
             System.out.println("1 - Afficher l'équipe");
             System.out.println("2 - Lancer un combat");
-            System.out.println("3 - Retour au menu principal");
+            System.out.println("3 - Afficher les crédits");
+            System.out.println("4 - Retour au menu principal");
             System.out.print("Votre choix : ");
 
             if (scanner.hasNextInt()) {
@@ -103,11 +104,18 @@ public class Main {
                 case 1:
                     dresseur.afficherEquipe();
                     break;
+
                 case 2:
                     lancerCombatSimple(scanner, dresseur);
                     return; 
+
                 case 3:
+                    System.out.println("Crédits : " + dresseur.getCredits());
+                    break;
+
+                case 4:
                     return;
+                    
                 default:
                     System.out.println("Choix invalide.");
             }
@@ -154,7 +162,13 @@ public class Main {
                 Combat.attaquer(joueur, sauvage);
 
                 if (sauvage.estKO()) {
+                    int gain = 10;
+                    dresseur.ajouterCredits(gain);
+
                     System.out.println("Le Pokemon sauvage est vaincu !");
+                    System.out.println("Vous gagnez " + gain + " crédits.");
+                    System.out.println("Crédits actuels : " + dresseur.getCredits());
+                                    
                     break;
                 }
 
