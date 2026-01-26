@@ -91,8 +91,9 @@ public class Main {
             System.out.println("1 - Afficher l'équipe");
             System.out.println("2 - Lancer un combat");
             System.out.println("3 - Utiliser un objet");
-            System.out.println("4 - Afficher les crédits");
-            System.out.println("5 - Retour au menu principal");
+            System.out.println("4 - Boutique");
+            System.out.println("5 - Afficher les crédits");
+            System.out.println("6 - Retour au menu principal");
             System.out.print("Votre choix : ");
 
             if (scanner.hasNextInt()) {
@@ -116,10 +117,14 @@ public class Main {
                     break;
 
                 case 4:
+                    menuBoutique(scanner, dresseur);
+                    break;
+
+                case 5:
                     System.out.println("Crédits : " + dresseur.getCredits());
                     break;
                     
-                case 5:
+                case 6:
                     return;
                 default:
                     System.out.println("Choix invalide.");
@@ -296,5 +301,54 @@ public class Main {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    private static void menuBoutique(Scanner scanner, Dresseur dresseur) {
+    int choix = -1;
+
+        while (choix != 4) {
+            System.out.println();
+            System.out.println("=== BOUTIQUE ===");
+            System.out.println("1 - Potion (5 crédits)");
+            System.out.println("2 - Rappel (10 crédits)");
+            System.out.println("3 - Pokéball (8 crédits)");
+            System.out.println("4 - Retour");
+            System.out.print("Votre choix : ");
+
+            if (scanner.hasNextInt()) {
+                choix = scanner.nextInt();
+            } else {
+                scanner.next();
+                continue;
+            }
+
+            switch (choix) {
+                case 1:
+                    acheterObjet(dresseur, "Potion", 5);
+                    break;
+                case 2:
+                    acheterObjet(dresseur, "Rappel", 10);
+                    break;
+                case 3:
+                    acheterObjet(dresseur, "Pokeball", 8);
+                    break;
+                case 4:
+                    return;
+                default:
+                    System.out.println("Choix invalide.");
+            }
+        }
+    }
+    
+    private static void acheterObjet(Dresseur dresseur, String nom, int prix) {
+        if (dresseur.getCredits() < prix) {
+            System.out.println("Crédits insuffisants.");
+            return;
+        }
+
+        dresseur.ajouterCredits(-prix);
+        dresseur.ajouterObjet(nom, 1);
+
+        System.out.println(nom + " acheté !");
     }
 }
