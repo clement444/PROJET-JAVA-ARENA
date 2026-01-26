@@ -145,18 +145,48 @@ public class Dresseur {
         return inventaire;
     }
 
+    public void utiliserRappel(int indexPokemon)
+        throws ActionInterditeException {
+
+        if (!inventaire.containsKey("Rappel") || inventaire.get("Rappel") <= 0) {
+            throw new ActionInterditeException("Aucun rappel disponible.");
+        }
+
+        if (indexPokemon < 0 || indexPokemon >= equipe.size()) {
+            throw new ActionInterditeException("Pokemon invalide.");
+        }
+
+        Pokemon p = equipe.get(indexPokemon);
+
+        if (!p.estKO()) {
+            throw new ActionInterditeException(
+                p.getNom() + " n'est pas KO."
+            );
+        }
+
+        int pvRestaures = p.getPvMax() / 2;
+        p.soigner(pvRestaures);
+
+        inventaire.put("Rappel", inventaire.get("Rappel") - 1);
+
+        System.out.println(
+            p.getNom() + " est ressuscité avec "
+            + p.getPv() + "/" + p.getPvMax() + " PV."
+        );
+    }
+
     public void capturerPokemon(Pokemon pokemon)
         throws ActionInterditeException {
 
         if (!inventaire.containsKey("Pokeball") || inventaire.get("Pokeball") <= 0) {
-            throw new ActionInterditeException("Aucune Pokeball disponible.");
+            throw new ActionInterditeException("Aucune Pokéball disponible.");
         }
 
         double pourcentagePv = (double) pokemon.getPv() / pokemon.getPvMax();
 
         if (pourcentagePv > 0.3) {
             throw new ActionInterditeException(
-                "Le Pokemon a plus de 30% de PV, capture impossible."
+                "Le Pokémon a plus de 30% de PV, capture impossible."
             );
         }
 

@@ -30,6 +30,7 @@ public class Main {
         dresseur.genererEquipeDepart();
         dresseur.ajouterObjet("Potion", 2);
         dresseur.ajouterObjet("Pokeball", 1);
+        dresseur.ajouterObjet("Rappel", 1);
 
         int choix = -1;
 
@@ -199,6 +200,23 @@ public class Main {
             }
         } catch (ActionInterditeException e) {
             System.out.println(e.getMessage());
+        }
+        if (!sauvage.estKO()) {
+
+        System.out.print("Tenter une capture ? (1 = oui / 0 = non) : ");
+
+        int choix = scanner.hasNextInt() ? scanner.nextInt() : 0;
+        scanner.nextLine();
+
+            if (choix == 1) {
+                try {
+                    dresseur.capturerPokemon(sauvage);
+                    System.out.println("Fin du combat.");
+                    return; // on sort du combat
+                } catch (ActionInterditeException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
         }
     }
 
