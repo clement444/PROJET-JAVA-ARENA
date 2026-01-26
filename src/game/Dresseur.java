@@ -6,6 +6,9 @@ import java.util.Random;
 import models.PokemonFeu;
 import models.PokemonEau;
 import models.PokemonPlante;
+import java.util.Map;
+import java.util.HashMap;
+
 
 
 public class Dresseur {
@@ -13,12 +16,15 @@ public class Dresseur {
     private String nomEquipe;
     private ArrayList<Pokemon> equipe;
     private int credits;
+    private Map<String, Integer> inventaire;
+
 
     // Constructeur
     public Dresseur(String nomEquipe) {
         this.nomEquipe = nomEquipe;
         this.equipe = new ArrayList<>();
         this.credits = 0;
+        this.inventaire = new HashMap<>();
     }
 
     // Getters
@@ -61,7 +67,7 @@ public class Dresseur {
             }
         }
     }
-    
+
     public void afficherEquipe() {
     System.out.println("Etat de l'equipe :");
 
@@ -73,5 +79,22 @@ public class Dresseur {
             );
         }
     }
+    
+    public void ajouterObjet(String nomObjet, int quantite) {
+        int quantiteActuelle = inventaire.getOrDefault(nomObjet, 0);
+        inventaire.put(nomObjet, quantiteActuelle + quantite);
+    }
 
+    public void afficherInventaire() {
+        System.out.println("Inventaire :");
+
+        if (inventaire.isEmpty()) {
+            System.out.println("Aucun objet.");
+            return;
+        }
+
+        for (String nomObjet : inventaire.keySet()) {
+            System.out.println("- " + nomObjet + " x" + inventaire.get(nomObjet));
+        }
+    }
 }

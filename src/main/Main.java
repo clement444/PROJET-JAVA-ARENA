@@ -16,6 +16,10 @@ public class Main {
 
         Dresseur dresseur = new Dresseur(nomEquipe);
         dresseur.genererEquipeDepart();
+        dresseur.ajouterObjet("Potion", 2);
+        dresseur.ajouterObjet("Pokeball", 1);
+
+
         System.out.println("Equipe de depart :");
         
         for (int i = 0; i < dresseur.getEquipe().size(); i++) {
@@ -45,10 +49,10 @@ public class Main {
             
             switch (choix) {
                 case 1:
-                    System.out.println("Nouvelle partie (prochain truc à ajouté)");
+                    dresseur.afficherInventaire();;
                     break;
                 case 2:
-                    dresseur.afficherEquipe();
+                    System.out.println("Chargement de la partie (prochain truc à ajouté)");
                     break;
                 case 3:
                     System.out.println("Au revoir !");
