@@ -8,6 +8,8 @@ import models.PokemonEau;
 import models.PokemonPlante;
 import java.util.Map;
 import java.util.HashMap;
+import exceptions.ActionInterditeException;
+
 
 
 
@@ -97,8 +99,9 @@ public class Dresseur {
             System.out.println("- " + nomObjet + " x" + inventaire.get(nomObjet));
         }
     }
-    
-    public void utiliserPotion(int indexPokemon) {
+
+    public void utiliserPotion(int indexPokemon)
+        throws ActionInterditeException {
 
         if (!inventaire.containsKey("Potion") || inventaire.get("Potion") <= 0) {
             System.out.println("Aucune potion disponible.");
@@ -113,8 +116,9 @@ public class Dresseur {
         Pokemon p = equipe.get(indexPokemon);
 
         if (p.getPv() == p.getPvMax()) {
-            System.out.println(p.getNom() + " a déjà tous ses PV.");
-            return;
+            throw new ActionInterditeException(
+                p.getNom() + " a déjà tous ses PV."
+            );
         }
 
         p.soigner(20);

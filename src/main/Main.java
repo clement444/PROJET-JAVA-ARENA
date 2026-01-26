@@ -1,6 +1,7 @@
 package main;
 
 import java.util.Scanner;
+import exceptions.ActionInterditeException;
 import game.Dresseur;
 
 
@@ -49,7 +50,11 @@ public class Main {
             
             switch (choix) {
                 case 1:
-                    System.out.println("Nouvelle partie (à venir)");
+                    try {
+                    dresseur.utiliserPotion(0);
+                        } catch (ActionInterditeException e) {
+                            System.out.println(e.getMessage());
+                    }
                     break;
                 case 2:
                     System.out.println("Chargement de la partie (prochain truc à ajouté)");
